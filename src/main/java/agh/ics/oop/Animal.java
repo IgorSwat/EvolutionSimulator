@@ -1,7 +1,5 @@
 package agh.ics.oop;
 
-import java.util.Arrays;
-
 public class Animal
 {
     private MapDirection orientation;
@@ -22,12 +20,12 @@ public class Animal
                 break;
             case FORWARD:
                 new_pos = position.add(orientation.toUnitVector());
-                if (new_pos.precedes(new Vector2d(4, 4)))
+                if (new_pos.follows(World.left_corner) && new_pos.precedes(World.right_corner))
                     position = new_pos;
                 break;
             case BACKWARD:
                 new_pos = position.subtract(orientation.toUnitVector());
-                if (new_pos.follows(new Vector2d(0, 0)))
+                if (new_pos.follows(World.left_corner) && new_pos.precedes(World.right_corner))
                     position = new_pos;
                 break;
         }
@@ -36,7 +34,6 @@ public class Animal
 
 class OptionsParser
 {
-    // opcjonalnie ArrayList
     static MoveDirection[] parse(String[] args)
     {
         MoveDirection[] tmp = new MoveDirection[args.length];

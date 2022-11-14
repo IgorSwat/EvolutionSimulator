@@ -26,6 +26,13 @@ public class Vector2d
         Vector2d vector = (Vector2d) other;
         return (x == vector.x && y == vector.y);
     }
+    public int hashCode()
+    {
+        int hash = 13;
+        hash = 31 * hash + x;
+        hash = 31 * hash + y;
+        return hash;
+    }
     public boolean follows(Vector2d other)
     {
         return (x >= other.x && y >= other.y);

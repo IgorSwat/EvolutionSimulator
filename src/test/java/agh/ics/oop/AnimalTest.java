@@ -8,26 +8,24 @@ public class AnimalTest
     @Test
     void movingTest()
     {
-        Animal animal = new Animal();
+        RectangularMap map = new RectangularMap(5, 5);
+        Animal animal = new Animal(map);
         animal.move(MoveDirection.FORWARD);
         animal.move(MoveDirection.FORWARD);
         animal.move(MoveDirection.FORWARD);
         animal.move(MoveDirection.RIGHT);
         assertTrue(animal.isAt(new Vector2d(2, 4)));
-        assertEquals(animal.toString(), "(2,4) Wschód");
         animal.move(MoveDirection.LEFT);
         animal.move(MoveDirection.BACKWARD);
         animal.move(MoveDirection.RIGHT);
         animal.move(MoveDirection.BACKWARD);
         assertTrue(animal.isAt(new Vector2d(1, 3)));
-        assertEquals(animal.toString(), "(1,3) Wschód");
         animal.move(MoveDirection.BACKWARD);
         animal.move(MoveDirection.BACKWARD);
         animal.move(MoveDirection.RIGHT);
         animal.move(MoveDirection.BACKWARD);
         animal.move(MoveDirection.BACKWARD);
         assertTrue(animal.isAt(new Vector2d(0, 4)));
-        assertEquals(animal.toString(), "(0,4) Południe");
     }
     @Test
     void parsingTest()

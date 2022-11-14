@@ -3,13 +3,12 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
 
-public class GrassField extends AbstractWorldMap implements IInteractiveMap
+public class GrassField extends AbstractWorldMap
 {
     private final Map<Vector2d, Grass> grass;
     private final int grassCount;
     private Vector2d topRight;
     private Vector2d bottomLeft;
-    private final MapVisualizer visualization;
     private final BorderCalculator border;
     private void updateCorners()
     {
@@ -66,7 +65,6 @@ public class GrassField extends AbstractWorldMap implements IInteractiveMap
         grassCount = n;
         topRight = new Vector2d(0, 0);
         bottomLeft = topRight;
-        visualization = new MapVisualizer(this);
         grass = new HashMap<>();
         border = new BorderCalculator();
 
@@ -74,7 +72,6 @@ public class GrassField extends AbstractWorldMap implements IInteractiveMap
     }
     public Vector2d getLeftCorner() {return bottomLeft;}
     public Vector2d getRightCorner() {return topRight;}
-    public MapVisualizer getVisualizer() {return visualization;}
     public boolean canMoveTo(Vector2d position)
     {
         return animals.get(position) == null;

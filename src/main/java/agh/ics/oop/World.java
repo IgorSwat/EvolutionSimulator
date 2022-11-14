@@ -7,7 +7,7 @@ public class World
     {
         MoveDirection[] directions = OptionsParser.parse(args);
         IInteractiveMap map = new GrassField(10);
-        Vector2d[] positions = { new Vector2d(1,1), new Vector2d(14,2) };
+        Vector2d[] positions = { new Vector2d(-10,-10), new Vector2d(14,2) };
         IEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
         out.println(map);

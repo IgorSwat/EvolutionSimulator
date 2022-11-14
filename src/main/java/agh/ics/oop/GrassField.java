@@ -54,7 +54,7 @@ public class GrassField extends AbstractWorldMap
                 border.loadObject(g);
             }
         }
-        // -------- Optional? How likely is it?
+        // -------- Optional? How likely is it to happen?
         if (count != n)
             generateGrassFix(n - count);
         // --------

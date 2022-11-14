@@ -101,6 +101,7 @@ public class GrassField extends AbstractWorldMap
         super.registerMove(animal, newPosition);
         if (grass.get(newPosition) != null)
         {
+            grass.remove(newPosition);
             border.forgetObject(animal);
             generateGrass(1);
         }

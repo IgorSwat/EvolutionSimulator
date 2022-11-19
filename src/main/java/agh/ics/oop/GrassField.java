@@ -96,9 +96,11 @@ public class GrassField extends AbstractWorldMap
         if (result != null) return result;
         return grass.get(position);
     }
-    public void registerMove(Animal animal, Vector2d newPosition)
+    public boolean positionChanged(Vector2d oldPosition, Vector2d newPosition)
     {
-        super.registerMove(animal, newPosition);
+        if (!super.positionChanged(oldPosition, newPosition))
+            return false;
+        Animal animal = animals.get(newPosition);
         if (grass.get(newPosition) != null)
         {
             grass.remove(newPosition);
@@ -110,5 +112,6 @@ public class GrassField extends AbstractWorldMap
             border.reloadObject(animal, newPosition);
             updateCorners();
         }
+        return true;
     }
 }

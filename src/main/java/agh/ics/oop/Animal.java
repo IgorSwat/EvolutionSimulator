@@ -1,24 +1,43 @@
 package agh.ics.oop;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Animal implements IMapElement
 {
     private MapDirection orientation = MapDirection.NORTH;
     private Vector2d position;
-    private final IInteractiveMap map;
-    public Animal(IInteractiveMap map)
+    private final IWorldMap map;
+    private final List<IPositionChangeObserver> observers = new ArrayList<>();
+
+    public Animal(IWorldMap map)
     {
         position = new Vector2d(2, 2);
         this.map = map;
     }
-    public Animal(IInteractiveMap map, Vector2d initialPosition)
+    public Animal(IWorldMap map, Vector2d initialPosition)
     {
         position = initialPosition;
         this.map = map;
     }
-    public Animal(IInteractiveMap map, Vector2d initialPosition, MapDirection initialOrientation)
+    public Animal(IWorldMap map, Vector2d initialPosition, MapDirection initialOrientation)
     {
         this(map, initialPosition);
         orientation = initialOrientation;
+    }
+    public void addObserver(IPositionChangeObserver observer)
+    {
+        observers.add(observer);
+    }
+    public boolean removeObserver(IPositionChangeObserver observer)
+    {
+        return observers.remove(observer);
+    }
+    public void positionChanged(Vector2d newPosition)
+    {
+        for (IPositionChangeObserver observer : observers)
+        {
+            observer.positionChanged(position, newPosition);
+        }
     }
     public String toString()
     {
@@ -46,7 +65,7 @@ public class Animal implements IMapElement
                 new_pos = position.add(orientation.toUnitVector());
                 if (map.canMoveTo(new_pos))
                 {
-                    map.registerMove(this, new_pos);
+                    positionChanged(new_pos);
                     position = new_pos;
                 }
                 break;
@@ -54,7 +73,7 @@ public class Animal implements IMapElement
                 new_pos = position.subtract(orientation.toUnitVector());
                 if (map.canMoveTo(new_pos))
                 {
-                    map.registerMove(this, new_pos);
+                    positionChanged(new_pos);
                     position = new_pos;
                 }
                 break;

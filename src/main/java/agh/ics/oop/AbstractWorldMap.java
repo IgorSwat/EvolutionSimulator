@@ -2,7 +2,7 @@ package agh.ics.oop;
 import java.util.Map;
 import java.util.HashMap;
 
-public abstract class AbstractWorldMap implements IInteractiveMap
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver
 {
     private final MapVisualizer visualization;
     protected final Map<Vector2d, Animal> animals;
@@ -29,11 +29,16 @@ public abstract class AbstractWorldMap implements IInteractiveMap
     {
         return animals.get(position);
     }
-    public void registerMove(Animal animal, Vector2d newPosition)
+    public boolean positionChanged(Vector2d oldPosition, Vector2d newPosition)
     {
-        Vector2d currentPos = animal.getPosition();
-        animals.remove(currentPos, animal);
-        animals.put(newPosition, animal);
+        Animal animal = animals.get(oldPosition);
+        if (animal != null)
+        {
+            animals.remove(oldPosition, animal);
+            animals.put(newPosition, animal);
+            return true;
+        }
+        return false;
     }
     public String toString()
     {

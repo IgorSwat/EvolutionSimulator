@@ -4,10 +4,10 @@ import java.util.List;
 
 public class SimulationEngine implements IEngine
 {
-    private IInteractiveMap map;
+    private IWorldMap map;
     private List<Animal> animals;
     private MoveDirection[] moves;
-    public SimulationEngine(MoveDirection[] moves, IInteractiveMap map, Vector2d[] starting_positions)
+    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] starting_positions)
     {
         this.map = map;
         this.moves = moves;
@@ -16,7 +16,10 @@ public class SimulationEngine implements IEngine
         {
             Animal current = new Animal(this.map, x);
             if (this.map.place(current))
+            {
+                current.addObserver((IPositionChangeObserver) map);
                 animals.add(current);
+            }
         }
     }
     public void changeMovementSet(MoveDirection[] moves)

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="agh.ics.oop.MapTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-11-19T12:37:35" hostname="LAPTOP-D03DR2UC" time="0.015">
+<testsuite name="agh.ics.oop.MapTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-11-20T10:53:06" hostname="LAPTOP-D03DR2UC" time="0.027">
   <properties/>
-  <testcase name="test6()" classname="agh.ics.oop.MapTest" time="0.015"/>
+  <testcase name="test1()" classname="agh.ics.oop.MapTest" time="0.016"/>
+  <testcase name="test2()" classname="agh.ics.oop.MapTest" time="0.002"/>
+  <testcase name="test3()" classname="agh.ics.oop.MapTest" time="0.002"/>
+  <testcase name="test4()" classname="agh.ics.oop.MapTest" time="0.003"/>
+  <testcase name="test5()" classname="agh.ics.oop.MapTest" time="0.001"/>
+  <testcase name="test6()" classname="agh.ics.oop.MapTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

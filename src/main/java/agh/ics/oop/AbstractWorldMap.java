@@ -13,7 +13,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     }
     public abstract Vector2d getRightCorner();
     public abstract Vector2d getLeftCorner();
-    public abstract boolean canMoveTo(Vector2d position);
+    public boolean canMoveTo(Vector2d position) {return animals.get(position) == null;}
     public boolean isOccupied(Vector2d position)
     {
         return animals.get(position) != null;

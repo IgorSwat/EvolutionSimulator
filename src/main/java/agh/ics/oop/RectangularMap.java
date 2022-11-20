@@ -12,6 +12,6 @@ public class RectangularMap extends AbstractWorldMap
     public Vector2d getRightCorner() {return right_corner;}
     public boolean canMoveTo(Vector2d position)
     {
-        return (position.follows(left_corner) && position.precedes(right_corner) && !super.isOccupied(position));
+        return (position.follows(left_corner) && position.precedes(right_corner) && super.canMoveTo(position));
     }
 }

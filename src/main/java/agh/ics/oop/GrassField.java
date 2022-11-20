@@ -1,12 +1,13 @@
 package agh.ics.oop;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GrassField extends AbstractWorldMap
 {
     private final Map<Vector2d, Grass> grass;
-    private final int grassCount;
+    private final int grassRange;
     private Vector2d topRight;
     private Vector2d bottomLeft;
     private final BorderCalculator border;
@@ -15,36 +16,37 @@ public class GrassField extends AbstractWorldMap
         topRight = border.getTopCorner();
         bottomLeft = border.getBottomCorner();
     }
-    private void generateGrassFix(int rest) // Fills the grass on the map, when there are too many random iterations
+    private void fixedGrassGeneration() // Finds all avaible squares and then generates one grass randomly
     {
-        int max_range = (int)Math.sqrt(10*grassCount) + 1;
-        for (int i = 0; i < max_range; i++)
+        ArrayList<Vector2d> freeSquares = new ArrayList<>();
+        for (int i = 0; i < grassRange; i++)
         {
-            for (int j = 0; j < max_range; j++)
+            for (int j = 0; j < grassRange; j++)
             {
-                if (rest == 0) return;
-                Vector2d pos = new Vector2d(i, j);
-                if (!isOccupied(pos))
-                {
-                    rest -= 1;
-                    Grass g = new Grass(pos);
-                    grass.put(pos, g);
-                    border.loadObject(g);
-                }
+                Vector2d position = new Vector2d(i, j);
+                if (!isOccupied(position))
+                    freeSquares.add(position);
             }
         }
+        if (freeSquares.size() > 0)
+        {
+            Random generator = new Random();
+            int i = generator.nextInt(freeSquares.size());
+            Vector2d position = freeSquares.get(i);
+            Grass g = new Grass(position);
+            grass.put(position, g);
+            border.loadObject(g);
+            updateCorners();
+        }
     }
-    private void generateGrass(int n)
+    private void randomGrassGeneration(int n)
     {
         Random generator = new Random();
         int count = 0;
-        int iterations = 0;
-        int max_range = (int)Math.sqrt(10*grassCount) + 1;
-        while (iterations < 10*grassCount && count < n)
+        while (count < n)
         {
-            iterations += 1;
-            int i = generator.nextInt(max_range);
-            int j = generator.nextInt(max_range);
+            int i = generator.nextInt(grassRange);
+            int j = generator.nextInt(grassRange);
             Vector2d pos = new Vector2d(i, j);
             if (!isOccupied(pos))
             {
@@ -54,28 +56,20 @@ public class GrassField extends AbstractWorldMap
                 border.loadObject(g);
             }
         }
-        // -------- Optional? How likely is it to happen?
-        if (count != n)
-            generateGrassFix(n - count);
-        // --------
         updateCorners();
     }
     public GrassField(int n)
     {
-        grassCount = n;
+        grassRange = (int)Math.sqrt(10*n) + 1;
         topRight = new Vector2d(0, 0);
         bottomLeft = topRight;
         grass = new HashMap<>();
         border = new BorderCalculator();
 
-        generateGrass(n);
+        randomGrassGeneration(n);
     }
     public Vector2d getLeftCorner() {return bottomLeft;}
     public Vector2d getRightCorner() {return topRight;}
-    public boolean canMoveTo(Vector2d position)
-    {
-        return animals.get(position) == null;
-    }
     public boolean isOccupied(Vector2d position)
     {
         return super.isOccupied(position) || (grass.get(position) != null);
@@ -105,7 +99,10 @@ public class GrassField extends AbstractWorldMap
         {
             grass.remove(newPosition);
             border.forgetObject(animal);
-            generateGrass(1);
+            if (animals.size() > 85 * grassRange * grassRange / 100)
+                fixedGrassGeneration();
+            else
+                randomGrassGeneration(1);
         }
         else
         {

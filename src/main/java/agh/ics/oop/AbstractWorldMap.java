@@ -11,7 +11,7 @@ public abstract class AbstractWorldMap implements IInteractiveMap
         visualization = new MapVisualizer(this);
         animals = new HashMap<>();
     }
-    public abstract Vector2d getRightCorner();
+    public abstract Vector2d getRightCorner();  // może być też protected
     public abstract Vector2d getLeftCorner();
     public abstract boolean canMoveTo(Vector2d position);
     public boolean isOccupied(Vector2d position)

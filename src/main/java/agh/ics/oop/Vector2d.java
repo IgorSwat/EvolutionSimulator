@@ -4,7 +4,7 @@ public class Vector2d
 {
     public final int x;
     public final int y;
-    Vector2d(int x_, int y_)
+    public Vector2d(int x_, int y_)
     {
         x = x_;
         y = y_;

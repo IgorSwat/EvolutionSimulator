@@ -16,12 +16,12 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     public boolean canMoveTo(Vector2d position) {return animals.get(position) == null;}
     public boolean isOccupied(Vector2d position)
     {
-        return animals.get(position) != null;
+        return objectAt(position) != null;
     }
     public boolean place(Animal animal)
     {
         if (!canMoveTo(animal.getPosition()))
-            return false;
+            throw new IllegalArgumentException(animal.getPosition() + " is not a legal square for animal");
         animals.put(animal.getPosition(), animal);
         return true;
     }
@@ -29,16 +29,11 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     {
         return animals.get(position);
     }
-    public boolean positionChanged(Vector2d oldPosition, Vector2d newPosition)
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition)
     {
         Animal animal = animals.get(oldPosition);
-        if (animal != null)
-        {
-            animals.remove(oldPosition, animal);
-            animals.put(newPosition, animal);
-            return true;
-        }
-        return false;
+        animals.remove(oldPosition, animal);
+        animals.put(newPosition, animal);
     }
     public String toString()
     {

@@ -37,14 +37,16 @@ public class AnimalTest
         MoveDirection[] ans2 = {MoveDirection.RIGHT, MoveDirection.BACKWARD, MoveDirection.LEFT, MoveDirection.FORWARD};
         MoveDirection[] res2 = OptionsParser.parse(ex2);
         String[] ex3 = {"f", "lala", "none", "backward", "g", "r", "left", "w", "p123", "9182"};
-        MoveDirection[] ans3 = {MoveDirection.FORWARD, MoveDirection.BACKWARD, MoveDirection.RIGHT, MoveDirection.LEFT};
-        MoveDirection[] res3 = OptionsParser.parse(ex3);
+        try {
+            MoveDirection[] res3 = OptionsParser.parse(ex3);
+        }
+        catch (Exception exception) {
+            assertEquals(exception.getMessage(), "lala is not legal move specification");
+        }
         for (int i = 0; i < 4; i++)
         {
             assertEquals(res1[i], ans1[i]);
             assertEquals(res2[i], ans2[i]);
-            assertTrue(res3.length == ans3.length);
-            assertEquals(res3[i], ans3[i]);
         }
     }
 }

@@ -2,7 +2,7 @@ package agh.ics.oop;
 
 public class OptionsParser
 {
-    static MoveDirection[] parse(String[] args)
+    public static MoveDirection[] parse(String[] args)
     {
         MoveDirection[] tmp = new MoveDirection[args.length];
         int last_id = 0;
@@ -27,7 +27,7 @@ public class OptionsParser
                     tmp[last_id] = MoveDirection.LEFT;
                     break;
                 default:
-                    last_id -= 1;
+                    throw new IllegalArgumentException(str + " is not legal move specification");
             }
             last_id += 1;
         }

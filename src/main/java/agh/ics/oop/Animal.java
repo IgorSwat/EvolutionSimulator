@@ -32,7 +32,7 @@ public class Animal implements IMapElement
     {
         return observers.remove(observer);
     }
-    public void positionChanged(Vector2d newPosition)
+    private void positionChanged(Vector2d newPosition)
     {
         for (IPositionChangeObserver observer : observers)
         {

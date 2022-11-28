@@ -71,7 +71,12 @@ public class MapTest
         assertFalse(map.canMoveTo(new Vector2d(4,3)));
         assertTrue(map.canMoveTo(new Vector2d(4,2)));
         assertTrue(map.canMoveTo(new Vector2d(10,10)));
-        assertFalse(map.place(new Animal(map, new Vector2d(4, 3))));
+        try {
+            map.place(new Animal(map, new Vector2d(4, 3)));
+        }
+        catch (Exception exception) {
+            assertEquals(exception.getMessage(), "(4,3) is not a legal square for animal");
+        }
         assertTrue(map.place(new Animal(map, new Vector2d(16, 11))));
         assertFalse(map.isOccupied(new Vector2d(9, 9)));
     }
@@ -89,7 +94,12 @@ public class MapTest
         assertFalse(map.canMoveTo(new Vector2d(4,7)));
         assertTrue(map.canMoveTo(new Vector2d(4,2)));
         assertTrue(map.canMoveTo(new Vector2d(100,100)));
-        assertFalse(map.place(new Animal(map, new Vector2d(6, 6))));
+        try {
+            map.place(new Animal(map, new Vector2d(6, 6)));
+        }
+        catch (Exception exception) {
+            assertEquals(exception.getMessage(), "(6,6) is not a legal square for animal");
+        }
         assertTrue(map.place(new Animal(map, new Vector2d(0, 0))));
         assertFalse(map.isOccupied(new Vector2d(-3, -5)));
     }

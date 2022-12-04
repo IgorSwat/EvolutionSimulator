@@ -50,7 +50,7 @@ public class Animal implements IMapElement
     }
     public boolean isAt(Vector2d pos) {return position.equals(pos);}
     public Vector2d getPosition() {return position;}
-    public void move(MoveDirection direction)
+    public boolean move(MoveDirection direction)
     {
         Vector2d new_pos;
         switch (direction)
@@ -68,6 +68,8 @@ public class Animal implements IMapElement
                     positionChanged(new_pos);
                     position = new_pos;
                 }
+                else
+                    return false;
                 break;
             case BACKWARD:
                 new_pos = position.subtract(orientation.toUnitVector());
@@ -76,7 +78,20 @@ public class Animal implements IMapElement
                     positionChanged(new_pos);
                     position = new_pos;
                 }
+                else
+                    return false;
                 break;
         }
+        return true;
+    }
+    public String getTextureLoc()
+    {
+        String textureName = switch (orientation) {
+            case NORTH -> "up";
+            case EAST -> "right";
+            case SOUTH -> "down";
+            case WEST -> "left";
+        };
+        return "C:/Programowanie/Java - laby/oolab/src/main/resources/" + textureName + ".png";
     }
 }

@@ -111,7 +111,7 @@ public class MapTest
         MoveDirection[] dirs1 = OptionsParser.parse(args1);
         MoveDirection[] dirs2 = OptionsParser.parse(args2);
         AbstractWorldMap map = new GrassField(3);   // Do celu testu użyte zostaje AbstractWorldMap
-        Vector2d[] positions = {new Vector2d(-2, -3), new Vector2d(8, 10), new Vector2d(-2, -3)};
+        Vector2d[] positions = {new Vector2d(-2, -3), new Vector2d(8, 10)};
         SimulationEngine engine = new SimulationEngine(dirs1, map, positions);
         engine.run();
 

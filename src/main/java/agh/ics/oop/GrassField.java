@@ -10,7 +10,7 @@ public class GrassField extends AbstractWorldMap
     private final int grassRange;
     private Vector2d topRight;
     private Vector2d bottomLeft;
-    private final BorderCalculator border;
+    private final MapBoundary border;
     private void updateCorners()
     {
         topRight = border.getTopCorner();
@@ -64,7 +64,7 @@ public class GrassField extends AbstractWorldMap
         topRight = new Vector2d(0, 0);
         bottomLeft = topRight;
         grass = new HashMap<>();
-        border = new BorderCalculator();
+        border = new MapBoundary();
 
         randomGrassGeneration(n);
     }

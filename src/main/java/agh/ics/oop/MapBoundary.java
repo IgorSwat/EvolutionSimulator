@@ -2,14 +2,14 @@ package agh.ics.oop;
 import java.util.TreeMap;
 
 // Data structure to provide O(log n) complexity of dynamic determination of map corners
-public class BorderCalculator
+public class MapBoundary
 {
-    private final BorderContainer horizontalContainer;
-    private final BorderContainer verticalContainer;
-    public BorderCalculator()
+    private final BoundaryContainer horizontalContainer;
+    private final BoundaryContainer verticalContainer;
+    public MapBoundary()
     {
-        horizontalContainer = new BorderContainer();
-        verticalContainer = new BorderContainer();
+        horizontalContainer = new BoundaryContainer();
+        verticalContainer = new BoundaryContainer();
     }
     public void loadObject(IMapElement element)
     {
@@ -51,10 +51,10 @@ public class BorderCalculator
     }
 }
 
-class BorderContainer
+class BoundaryContainer
 {
     private final TreeMap<Integer, Integer> borderValues;
-    public BorderContainer() {borderValues = new TreeMap<>();}
+    public BoundaryContainer() {borderValues = new TreeMap<>();}
     public void add(int v)
     {
         Integer oldValue = borderValues.get(v);

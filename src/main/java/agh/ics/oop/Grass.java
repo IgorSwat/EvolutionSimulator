@@ -15,4 +15,7 @@ public class Grass implements IMapElement
     {
         return "*";
     }
+    public String getTextureLoc() {
+        return "C:/Programowanie/Java - laby/oolab/src/main/resources/grass.jpg";
+    }
 }

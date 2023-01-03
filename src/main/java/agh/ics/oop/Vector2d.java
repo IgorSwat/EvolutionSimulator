@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import agh.ics.oop.map.IWorldMap;
+
 public class Vector2d
 {
     public final int x;
@@ -56,5 +58,8 @@ public class Vector2d
     public Vector2d opposite()
     {
         return new Vector2d(-x, -y);
+    }
+    public int getSquareID(int mapWidth) {
+        return this.y * mapWidth + this.x;
     }
 }

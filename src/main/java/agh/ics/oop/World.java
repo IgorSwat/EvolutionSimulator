@@ -1,5 +1,8 @@
 package agh.ics.oop;
+import agh.ics.oop.elements.Animal;
+import agh.ics.oop.elements.genotype.GenotypeClassic;
 import agh.ics.oop.gui.App;
+import agh.ics.oop.map.*;
 import javafx.application.Application;
 
 import static java.lang.System.exit;

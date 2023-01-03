@@ -1,0 +1,14 @@
+Map height: 30
+Map width: 30
+Grass starting number: 40
+Grass respawn per day: 4
+Animals starting number: 10
+Animals starting energy: 40
+Energy per grass: 15
+Reproduction energy requirements: 15
+Reproduction energy cost: 10
+Energy loss per day: 1
+Minimal mutations number: 1
+Maximal mutations number: 2
+Genome length: 12
+Simulation refresh time (ms): 50

@@ -1,112 +1,89 @@
 package agh.ics.oop.gui;
 
-import agh.ics.oop.AbstractWorldMap;
-import agh.ics.oop.IMapElement;
+import agh.ics.oop.elements.IMapElement;
 import agh.ics.oop.Vector2d;
-import javafx.geometry.HPos;
+import agh.ics.oop.map.IPositionChangeObserver;
+import agh.ics.oop.map.IWorldMap;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
-public class GridHandler
+// Klasa obsługująca graficzną reprezentację świata symulacji
+public class GridHandler implements IPositionChangeObserver
 {
-    private final GridPane grid;
-    private final List<GuiElementBox> elements;
-    private final double squareSize = 50;
-    private int currentXRange = -1;
-    private int currentYRange = -1;
-    private boolean linesVisibility = false;
+    private final IWorldMap map;
+    private final HashMap<Vector2d, Node> elements = new HashMap<>();
+    private final GridPane grid = new GridPane();
+    private final double squareWidth;
+    private final double squareHeight;
 
-    public GridHandler()
+    public GridHandler(IWorldMap map, double gridWidth, double gridHeight)
     {
-        grid = new GridPane();
-        elements = new ArrayList<>();
-    }
-    private void loadNode(Node node, Vector2d indices)
-    {
-        GridPane.setHalignment(node, HPos.CENTER);
-        grid.add(node, indices.x, indices.y, 1, 1);
+        this.grid.setPrefWidth(gridWidth);
+        this.grid.setPrefHeight(gridHeight);
+        this.grid.backgroundProperty().set(new Background(new BackgroundFill(Color.color(0.65, 1.0, 0.4),
+                                                            CornerRadii.EMPTY, Insets.EMPTY)));
+        this.map = map;
+        // Ustawia GridHandlera jako obserwatora (wizualizację) mapy
+        this.map.setVisualiser(this);
+        this.squareHeight = 750.0 / map.getHeight();
+        this.squareWidth = 750.0 / map.getWidth();
+        loadGridConstraints(map.getWidth(), map.getHeight());
+
     }
     private void loadGridConstraints(int columnDiff, int rowDiff) {
-        if (columnDiff >= 0)
-        {
-            for (int i = 0; i < columnDiff; i++)
-                grid.getColumnConstraints().add(new ColumnConstraints(squareSize));
-        }
-        else
-        {
-            for (int i = 0; i > columnDiff; i--)
-                grid.getColumnConstraints().remove(grid.getColumnConstraints().size() - 1);
-        }
-        if (rowDiff >= 0)
-        {
-            for (int j = 0; j < rowDiff; j++)
-                grid.getRowConstraints().add(new RowConstraints(squareSize));
-        }
-        else
-        {
-            for (int i = 0; i > rowDiff; i--)
-                grid.getRowConstraints().remove(grid.getRowConstraints().size() - 1);
-        }
+        for (int i = 0; i < columnDiff; i++)
+            grid.getColumnConstraints().add(new ColumnConstraints(squareWidth));
+        for (int j = 0; j < rowDiff; j++)
+            grid.getRowConstraints().add(new RowConstraints(squareHeight));
     }
-    public void loadGridContent(AbstractWorldMap map)
+    public void loadGridContent(String genotypeCheck)
     {
-        Vector2d leftCorner = map.getLeftCorner();
-        Vector2d rightCorner = map.getRightCorner();
+        int width = map.getWidth();
+        int height = map.getHeight();
+        Vector2d leftCorner = new Vector2d(0, 0);
+        Vector2d rightCorner = new Vector2d(width - 1, height - 1);
         Vector2d mixedCorner = new Vector2d(leftCorner.x, rightCorner.y);
-        int width = rightCorner.x - leftCorner.x + 1;
-        int height = rightCorner.y - leftCorner.y + 1;
-        loadGridConstraints(width - currentXRange, height - currentYRange);
-        currentXRange = width;
-        currentYRange = height;
-        loadNode(new Label("y/x"), new Vector2d(0, 0));
-        for (int i = 0; i < width; i++) {
-            loadNode(new Label(Integer.toString(leftCorner.x + i)), new Vector2d(i + 1, 0));
-        }
-        for (int j = 0; j < height; j++) {
-            loadNode(new Label(Integer.toString(rightCorner.y - j)), new Vector2d(0, j + 1));
-        }
-        int countElemments = 0;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                Object object = map.objectAt(mixedCorner.add(new Vector2d(i, -j)));
-                Vector2d id = new Vector2d(i + 1, j + 1);
-                if (object == null)
-                    loadNode(new Label(""), id);
-                else {
-                    try {
-                        GuiElementBox element;
-                        if (countElemments < elements.size())
-                        {
-                            element = elements.get(countElemments);
-                            element.reloadContent((IMapElement) object);
-                        }
-                        else
-                        {
-                            element = new GuiElementBox((IMapElement) object);
-                            elements.add(element);
-                        }
-                        countElemments += 1;
-                        grid.add(element.getVisualization(), i + 1, j + 1, 1, 1);
-                    } catch (FileNotFoundException exception) {
-                        System.out.println(exception.getMessage());
-                        System.exit(-9);
-                    }
+                Vector2d position = mixedCorner.add(new Vector2d(i, -j));
+                Object object = map.objectAt(position);
+                if (object != null) {
+                    GuiElementBox element = new GuiElementBox((IMapElement) object, genotypeCheck, squareWidth, squareHeight);
+                    grid.add(element.getVisualization(), i, j, 1, 1);
+                    elements.put(position, element.getVisualization());
                 }
             }
         }
-
     }
-    public void changeLinesVisibility()
-    {
-        linesVisibility = !linesVisibility;
-        grid.setGridLinesVisible(linesVisibility);
+    // Wywowływana za każdym razem gdy zwierzę lub trawa zmieniają swoją pozycję w sposób znaczący dla widoku świata
+    public void positionChanged(IMapElement element, Vector2d oldPosition) {
+        Vector2d mixedCorner = new Vector2d(0, map.getHeight() - 1);
+        if (oldPosition != null) {
+            grid.getChildren().remove(elements.get(oldPosition));
+            elements.remove(oldPosition);
+            Object object = map.objectAt(oldPosition);
+            if (object != null) {
+                GuiElementBox guiElement = new GuiElementBox((IMapElement) object, "", squareWidth, squareHeight);
+                grid.add(guiElement.getVisualization(), oldPosition.x - mixedCorner.x, mixedCorner.y - oldPosition.y);
+                elements.put(oldPosition, guiElement.getVisualization());
+            }
+        }
+        if (element != null) {
+            Vector2d newPosition = element.getPosition();
+            Object object = map.objectAt(newPosition);
+            GuiElementBox guiElement = new GuiElementBox((IMapElement) object, "", squareWidth, squareHeight);
+            if (elements.get(newPosition) != null) {
+                grid.getChildren().remove(elements.get(newPosition));
+                elements.remove(newPosition);
+            }
+            grid.add(guiElement.getVisualization(), newPosition.x - mixedCorner.x, mixedCorner.y - newPosition.y);
+            elements.put(newPosition, guiElement.getVisualization());
+        }
     }
     public void clearGrid() {grid.getChildren().clear();}
     public GridPane getGrid() {return this.grid;}

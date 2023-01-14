@@ -31,6 +31,7 @@ public class ForestedEquatorsGenerator implements IGrassGenerator {
                 freeOtherSquares.put(currentSquare.getSquareID(mapWidth), currentSquare);
         }
     }
+
     // Generuje wolne pole na mapie wg ustalonego zbioru pól (preferowane lub inne)
     // Generacja odbywa się z wykorzystaniem zbalansowanego drzewa w postaci TreeMap,
     // wylosowywane jest dowolne pole mapy a następnie dobierane w czasie O(log nm) wolne pole danej kategorii
@@ -47,13 +48,14 @@ public class ForestedEquatorsGenerator implements IGrassGenerator {
             result = found.getValue();
             return result;
         }
-        found =  container.higherEntry(generatedID);
+        found = container.higherEntry(generatedID);
         if (found != null) {
             result = found.getValue();
             return result;
         }
         return null;
     }
+
     public Vector2d generateGrassPosition() {
         int choice = generator.nextInt(100);
         if (choice < 80 && freePreferredSquares.size() > 0)
@@ -61,6 +63,7 @@ public class ForestedEquatorsGenerator implements IGrassGenerator {
         else
             return generateSquare(freeOtherSquares, 0, mapHeight * mapWidth - 1);
     }
+
     public void changeSquareState(Vector2d position) {
         int id = position.getSquareID(mapWidth);
         if (freePreferredSquares.get(id) != null)

@@ -20,7 +20,7 @@ public class HellPortal extends RectangularMap {
     public AnimalParameters calculateAnimalState(Animal animal, Vector2d offset) {
         Vector2d positionTranslated = animal.getPosition().add(offset);
         if (positionTranslated.x < 0 || positionTranslated.x >= getWidth() || positionTranslated.y < 0 || positionTranslated.y >= getHeight()) {
-            Random generator = new Random();
+            Random generator = new Random(); // nowy obiekt co wywołanie
             positionTranslated = new Vector2d(generator.nextInt(getWidth()), generator.nextInt(getHeight()));
             return new AnimalParameters(positionTranslated, animal.getDirection(), animal.getEnergy() - energyReduction);
         }

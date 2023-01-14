@@ -4,6 +4,7 @@ public class MutationFixed extends AbstractMutationBasic {
     public MutationFixed(int minMutations, int maxMutations) {
         super(minMutations, maxMutations);
     }
+
     public void applyChange(IGenotypeBasic genotype, int geneID) {
         boolean choice = generator.nextBoolean();
         int genotypeLength = genotype.getGenotypeLength();

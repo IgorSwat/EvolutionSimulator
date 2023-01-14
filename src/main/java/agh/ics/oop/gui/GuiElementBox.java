@@ -10,9 +10,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 // Klasa reprezentująca pojedynczy element na mapie (zwierzę lub roślinę)
-public class GuiElementBox
-{
+public class GuiElementBox {
     private final VBox container;
+
     public GuiElementBox(IMapElement element, String genotypeCheck, double squareWidth, double squareHeight) {
         container = new VBox();
         container.setPrefWidth(squareWidth);
@@ -22,10 +22,9 @@ public class GuiElementBox
             Animal animal = (Animal) element;
             Circle circle = new Circle();
             if (animal.getGenotype().toString().equals(genotypeCheck)) {
-                circle.setRadius(45*Math.min(squareHeight, squareWidth) / 100);
+                circle.setRadius(45 * Math.min(squareHeight, squareWidth) / 100);
                 circle.setFill(Color.BLUEVIOLET);
-            }
-            else {
+            } else {
                 circle.setRadius(4 * Math.min(squareHeight, squareWidth) / 10);
                 double status = element.getHealthStatus();
                 if (status > 0.9)
@@ -40,16 +39,16 @@ public class GuiElementBox
                     circle.setFill(Color.color(1.0, 0.75, 0.5));
             }
             node = circle;
-        }
-        else {
+        } else {
             Rectangle rectangle = new Rectangle();
-            rectangle.setWidth(8*squareWidth / 10);
-            rectangle.setHeight(8*squareHeight / 10);
+            rectangle.setWidth(8 * squareWidth / 10);
+            rectangle.setHeight(8 * squareHeight / 10);
             rectangle.setFill(Color.color(0.15, 0.65, 0.15));
             node = rectangle;
         }
         container.getChildren().add(node);
     }
+
     public VBox getVisualization() {
         return container;
     }

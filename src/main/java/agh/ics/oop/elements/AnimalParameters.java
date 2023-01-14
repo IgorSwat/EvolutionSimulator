@@ -7,4 +7,5 @@ public record AnimalParameters(
         Vector2d position,
         MapDirection orientation,
         int energy
-) {}
+) {
+}

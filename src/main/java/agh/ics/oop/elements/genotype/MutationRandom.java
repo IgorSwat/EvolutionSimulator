@@ -4,6 +4,7 @@ public class MutationRandom extends AbstractMutationBasic {
     public MutationRandom(int minMutations, int maxMutations) {
         super(minMutations, maxMutations);
     }
+
     public void applyChange(IGenotypeBasic genotype, int geneID) {
         int value = generator.nextInt(8);
         int oldValue = genotype.getGene(geneID);

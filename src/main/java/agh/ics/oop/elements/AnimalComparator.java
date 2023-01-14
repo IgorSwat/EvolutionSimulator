@@ -11,7 +11,7 @@ public class AnimalComparator implements Comparator<Animal> {
             return first.getAge() - second.getAge();
         if (first.getChildren() != second.getChildren())
             return first.getChildren() - second.getChildren();
-        if (first.getID() > second.getID())
+        if (first.getID() > second.getID()) // a czemu tu Pan zrezygnował z odejmowania?
             return 1;
         if (first.getID() < second.getID())
             return -1;

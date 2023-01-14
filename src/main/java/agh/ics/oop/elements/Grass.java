@@ -2,19 +2,22 @@ package agh.ics.oop.elements;
 
 import agh.ics.oop.Vector2d;
 
-public class Grass implements IMapElement
-{
+public class Grass implements IMapElement {
     private final Vector2d position;
+
     public Grass(Vector2d position) {
         this.position = position;
     }
-    public Vector2d getPosition()
-    {
+
+    public Vector2d getPosition() {
         return position;
     }
-    public String toString()
-    {
+
+    public String toString() {
         return "*";
     }
-    public double getHealthStatus() {return 1.0;}
+
+    public double getHealthStatus() {
+        return 1.0;
+    }
 }

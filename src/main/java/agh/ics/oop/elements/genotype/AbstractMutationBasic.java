@@ -27,8 +27,10 @@ public abstract class AbstractMutationBasic implements IMutationBasic {
             generatedIDs[i] = availableIDs.get(i);
         return generatedIDs;
     }
+
     // Aplikuje zmianę pojedynczego genu (w zależności od implementacji, mniej lub bardziej losową)
     public abstract void applyChange(IGenotypeBasic genotype, int geneID);
+
     // Aplikuje mutację do genotypu
     public void applyMutation(IGenotypeBasic genotype) {
         int[] genesToChanged = generatePermutation(genotype.getGenotypeLength());

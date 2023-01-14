@@ -49,24 +49,24 @@ public class Simulation {
             }
         });
     }
+
     public void refreshScene() {
         statsPanel.setButtonText("Simulation on");
         grid.clearGrid();
         grid.loadGridContent(statsPanel.getStatValue("Top genotype"));
     }
+
     // Stopuje / wznawia symulację
     public void changeSimulationState() {
         if (simulationState) {
             try {
                 engine.switchOff();
                 engineThread.join();
-            }
-            catch (InterruptedException exception) {
+            } catch (InterruptedException exception) {
                 System.out.println(exception.getMessage());
                 System.exit(-101);
             }
-        }
-        else {
+        } else {
             engine.switchOn();
             statsPanel.setButtonText("Simulation off");
             grid.clearGrid();
@@ -76,6 +76,7 @@ public class Simulation {
         }
         simulationState = !simulationState;
     }
+
     // Aktualizacja statystyk wyświetlanych w GUI
     public void loadStatistics() {
         HashMap<String, IStatLog> logs = engine.getStats();

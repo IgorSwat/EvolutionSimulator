@@ -13,8 +13,7 @@ import java.util.TreeSet;
 // Zwierzęta przechowywane są w TreeSetach, które to z kolei przypisane są do pól poprzez HashMapę. Gwarantuje to logarytmiczny czas
 // wyłaniania najsilniejszego zwierzaka na danym polu, jak i wydajne usuwanie / dodawanie zwierząt.
 // Mam nadzieję że nazwy metod są wystarczająco samo-opisujące.
-public abstract class RectangularMap implements IPositionChangeObserver, IWorldMap
-{
+public abstract class RectangularMap implements IPositionChangeObserver, IWorldMap {
     private final SimulationEngine engineObserver;
     private GridHandler grid;
     private final Vector2d bottomLeft = new Vector2d(0, 0);
@@ -35,7 +34,8 @@ public abstract class RectangularMap implements IPositionChangeObserver, IWorldM
         this.grassEnergy = grassEnergy;
         generateGrass(startingGrass);
     }
-    private void updateVisualisation(IMapElement element, Vector2d oldPosition) {
+
+    private void updateVisualisation(IMapElement element, Vector2d oldPosition) { // niebezpiecznie wchodzi w obszar GUI
         if (grid != null) {
             Platform.runLater(new Runnable() {
                 @Override
@@ -45,6 +45,7 @@ public abstract class RectangularMap implements IPositionChangeObserver, IWorldM
             });
         }
     }
+
     private void generateGrass(int grassMissing) {
         int range = grassMissing;
         if (grass.size() + grassMissing > 8 * getWidth() * getHeight() / 10)
@@ -60,9 +61,11 @@ public abstract class RectangularMap implements IPositionChangeObserver, IWorldM
         }
         engineObserver.updateStatLog("Grass", range);
     }
+
     public void setVisualiser(GridHandler grid) {
         this.grid = grid;
     }
+
     public boolean place(Animal animal) {
         Vector2d position = animal.getPosition();
         if (position.follows(bottomLeft) && position.precedes(topRight)) {
@@ -71,19 +74,18 @@ public abstract class RectangularMap implements IPositionChangeObserver, IWorldM
                 animals.put(position, animalSet);
                 animalSet.add(animal);
                 engineObserver.updateStatLog("Free squares", -1);
-            }
-            else {
+            } else {
                 if (animals.get(position).size() == 0)
                     engineObserver.updateStatLog("Free squares", -1);
                 animals.get(position).add(animal);
             }
             animal.addObserver(this);
             engineObserver.updateStatLog("Average animal energy", animal.getEnergy());
-        }
-        else
+        } else
             throw new IllegalArgumentException(position.toString() + " position does not belongs to the map");
         return true;
     }
+
     public boolean remove(Animal animal) {
         TreeSet<Animal> container = animals.get(animal.getPosition());
         if (container == null || !container.contains(animal)) {
@@ -95,27 +97,33 @@ public abstract class RectangularMap implements IPositionChangeObserver, IWorldM
         updateVisualisation(null, animal.getPosition());
         return true;
     }
+
     public boolean isOccupied(Vector2d position) {
         TreeSet<Animal> selectedAnimals = getAnimals(position);
         if (selectedAnimals == null || selectedAnimals.size() == 0)
             return grass.get(position) != null;
         return true;
     }
+
     public TreeSet<Animal> getAnimals(Vector2d position) {
-        return animals.get(position);
+        return animals.get(position);  // dehermetyzacja
     }
+
     public Object objectAt(Vector2d position) {
         TreeSet<Animal> animalsAt = getAnimals(position);
         if (animalsAt != null && animalsAt.size() > 0)
             return animalsAt.last();
         return grass.get(position);
     }
+
     public AnimalParameters calculateAnimalState(Animal animal, Vector2d offset) {
         return new AnimalParameters(animal.getPosition().add(offset), animal.getDirection(), animal.getEnergy());
     }
+
     public void respawnGrass() {
         generateGrass(grassRespawn);
     }
+
     public void consumeGrass() {
         for (Vector2d position : animals.keySet()) {
             TreeSet<Animal> animalsContainer = animals.get(position);
@@ -129,6 +137,7 @@ public abstract class RectangularMap implements IPositionChangeObserver, IWorldM
             }
         }
     }
+
     public void positionChanged(IMapElement element, Vector2d oldPosition) {
         Animal animal = (Animal) element;
         animals.get(oldPosition).remove(animal);
@@ -143,12 +152,17 @@ public abstract class RectangularMap implements IPositionChangeObserver, IWorldM
                 && animals.get(currentPosition).size() == 1 && grass.get(currentPosition) == null)
             engineObserver.updateStatLog("Free squares", -1);
     }
+
     public void animalStateChanged(Animal animal, Vector2d position) {
         animals.get(position).remove(animal);
         animals.get(position).add(animal);
     }
+
     public int getWidth() {
         return topRight.x + 1;
     }
-    public int getHeight() {return topRight.y + 1;}
+
+    public int getHeight() {
+        return topRight.y + 1;
+    }
 }

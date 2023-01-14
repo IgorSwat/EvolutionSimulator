@@ -3,7 +3,7 @@ package agh.ics.oop.data;
 import java.util.*;
 
 // Obiekt statystyczny do dynamicznego obliczania najpopularniejszego genotypu
-public class StatLogGenotype implements IStatLog{
+public class StatLogGenotype implements IStatLog {
     private final HashMap<String, Integer> genotypeWithCount = new HashMap<>();
 
     public void registerStatChange(Object change) {
@@ -25,7 +25,7 @@ public class StatLogGenotype implements IStatLog{
     public String getStatValue() {
         String result = "-";
         int maxCount = 0;
-        Set<Map.Entry<String, Integer> > genotypesMap = genotypeWithCount.entrySet();
+        Set<Map.Entry<String, Integer>> genotypesMap = genotypeWithCount.entrySet();
         for (Map.Entry<String, Integer> entry : genotypesMap) {
             if (entry.getValue() > maxCount) {
                 maxCount = entry.getValue();

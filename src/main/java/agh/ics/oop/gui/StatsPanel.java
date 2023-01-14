@@ -48,13 +48,13 @@ public class StatsPanel {
 
     private void addStatsLine(String title, String initialValue) {
         HBox line = new HBox();
-        line.setMinWidth(0.9*panelWidth);
+        line.setMinWidth(0.9 * panelWidth);
         line.setPrefHeight(lineHeight);
         Label titleLabel = new Label(title + ":");
-        titleLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, 0.8*fontSize));
+        titleLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, 0.8 * fontSize));
         line.getChildren().add(titleLabel);
         Text statField = new Text();
-        statField.setFont(Font.font("Verdana", FontWeight.BOLD, 1.5*fontSize));
+        statField.setFont(Font.font("Verdana", FontWeight.BOLD, 1.5 * fontSize));
         statField.setText(initialValue);
         statField.setTextAlignment(TextAlignment.RIGHT);
         line.getChildren().add(statField);
@@ -63,14 +63,15 @@ public class StatsPanel {
         line.setSpacing(fontSize);
         upperPart.getChildren().add(line);
     }
+
     private void createButton() {
         HBox line = new HBox();
-        line.setMinWidth(0.9*panelWidth);
+        line.setMinWidth(0.9 * panelWidth);
         line.setAlignment(Pos.CENTER);
         button = new Button();
         button.setText("Simulation off");
         button.setAlignment(Pos.BOTTOM_CENTER);
-        button.setFont(Font.font("Verdana", FontWeight.MEDIUM, 1.5*fontSize));
+        button.setFont(Font.font("Verdana", FontWeight.MEDIUM, 1.5 * fontSize));
         line.getChildren().add(button);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -80,21 +81,25 @@ public class StatsPanel {
         });
         panel.getChildren().add(line);
     }
+
     public void updateStat(String statName, String value) {
         Text textField = statistics.get(statName);
         if (textField == null)
             throw new IllegalArgumentException(statName + " is not a valid statistics name");
         textField.setText(value);
     }
+
     public String getStatValue(String statName) {
         Text textField = statistics.get(statName);
         if (textField == null)
             throw new IllegalArgumentException(statName + " is not a valid statistics name");
         return textField.getText();
     }
+
     public void setButtonText(String text) {
         button.setText(text);
     }
+
     public VBox getRoot() {
         return panel;
     }

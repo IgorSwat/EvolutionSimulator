@@ -21,7 +21,7 @@ public class Settings {
     private final int refreshTime;
 
     public Settings(double height, double width, String mapType, int grassStarting, int grassRespawn,
-                     int animalsStarting, int startingEnergy, int energyPerGrass,
+                    int animalsStarting, int startingEnergy, int energyPerGrass,
                     int reproductionEnergy, int reproductionCost, int energyLoss, int minMutations, int maxMutations,
                     String mutationType, int genomeLength, String animalsBehavior, int refreshTime) {
         this.mapWidth = width;
@@ -43,21 +43,71 @@ public class Settings {
         this.refreshTime = refreshTime;
     }
 
-    public double getMapWidth() {return mapWidth;}
-    public double getMapHeight() {return mapHeight;}
-    public String getMapType() {return mapType;}
-    public int getGrassStarting() {return grassStarting;}
-    public int getGrassRespawn() {return grassRespawn;}
-    public int getAnimalsStarting() {return animalsStarting;}
-    public int getStartingEnergy() {return startingEnergy;}
-    public int getEnergyPerGrass() {return energyPerGrass;}
-    public int getReproductionEnergy() {return reproductionEnergy;}
-    public int getReproductionCost() {return reproductionCost;}
-    public int getEnergyLoss() {return energyLoss;}
-    public int getMinMutations() {return minMutations;}
-    public int getMaxMutations() {return maxMutations;}
-    public String getMutationType() {return mutationType;}
-    public int getGenomeLength() {return genomeLength;}
-    public String getAnimalsBehavior() {return animalsBehavior;}
-    public int getRefreshTime() {return refreshTime;}
+    public double getMapWidth() {
+        return mapWidth;
+    }
+
+    public double getMapHeight() {
+        return mapHeight;
+    }
+
+    public String getMapType() {
+        return mapType;
+    }
+
+    public int getGrassStarting() {
+        return grassStarting;
+    }
+
+    public int getGrassRespawn() {
+        return grassRespawn;
+    }
+
+    public int getAnimalsStarting() {
+        return animalsStarting;
+    }
+
+    public int getStartingEnergy() {
+        return startingEnergy;
+    }
+
+    public int getEnergyPerGrass() {
+        return energyPerGrass;
+    }
+
+    public int getReproductionEnergy() {
+        return reproductionEnergy;
+    }
+
+    public int getReproductionCost() {
+        return reproductionCost;
+    }
+
+    public int getEnergyLoss() {
+        return energyLoss;
+    }
+
+    public int getMinMutations() {
+        return minMutations;
+    }
+
+    public int getMaxMutations() {
+        return maxMutations;
+    }
+
+    public String getMutationType() {
+        return mutationType;
+    }
+
+    public int getGenomeLength() {
+        return genomeLength;
+    }
+
+    public String getAnimalsBehavior() {
+        return animalsBehavior;
+    }
+
+    public int getRefreshTime() {
+        return refreshTime;
+    }
 }

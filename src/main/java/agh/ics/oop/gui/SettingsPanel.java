@@ -48,6 +48,7 @@ public class SettingsPanel {
         root.getChildren().add(inputLine);
         inputs.put(text, input);
     }
+
     private void addRadioInput(String text, String... values) {
         HBox inputLine = new HBox();
         inputLine.setPrefHeight(inputLineHeight);
@@ -66,15 +67,17 @@ public class SettingsPanel {
         root.getChildren().add(inputLine);
         radioInputs.put(text, group);
     }
+
     private void addLabel(String text) {
         Label label = new Label(text);
         label.setFont(Font.font("Verdana", FontWeight.BOLD, higherFontSize));
         root.getChildren().add(label);
     }
+
     private void createSaveButton() {
         Button button = new Button("Run");
-        button.setPrefWidth(0.8*inputWidth);
-        button.setPrefHeight(2*inputHeight);
+        button.setPrefWidth(0.8 * inputWidth);
+        button.setPrefHeight(2 * inputHeight);
         button.setFont(Font.font("Verdana", FontWeight.MEDIUM, higherFontSize));
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -84,10 +87,11 @@ public class SettingsPanel {
         });
         root.getChildren().add(button);
     }
+
     private void createFileButton() {
         Button button = new Button("Select configuration");
-        button.setPrefWidth(2*inputWidth);
-        button.setPrefHeight(2*inputHeight);
+        button.setPrefWidth(2 * inputWidth);
+        button.setPrefHeight(2 * inputHeight);
         button.setFont(Font.font("Verdana", FontWeight.MEDIUM, higherFontSize));
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -98,14 +102,14 @@ public class SettingsPanel {
                 try {
                     if (fileChosen != null)
                         parseFile(fileChosen);
-                }
-                catch (FileNotFoundException exception) {
+                } catch (FileNotFoundException exception) {
                     System.out.println(exception.getMessage());
                 }
             }
         });
         root.getChildren().add(button);
     }
+
     private void parseFile(File file) throws FileNotFoundException {
         Scanner reader = new Scanner(file);
         while (reader.hasNextLine()) {
@@ -131,22 +135,25 @@ public class SettingsPanel {
         }
         reader.close();
     }
+
     private String getInputValue(String inputName) throws InvalidParameterException {
         if (inputs.get(inputName) != null) {
             return inputs.get(inputName).getText();
         }
-        if (radioInputs.get(inputName) != null){
+        if (radioInputs.get(inputName) != null) {
             RadioButton selected = (RadioButton) radioInputs.get(inputName).getSelectedToggle();
             return selected.getText();
         }
         throw new InvalidParameterException(inputName + " is not defined as an input");
     }
-    private void setInputValue(String inputName, String value) throws  InvalidParameterException {
+
+    private void setInputValue(String inputName, String value) throws InvalidParameterException {
         TextField input = inputs.get(inputName);
         if (input == null)
             throw new InvalidParameterException(inputName + " is not defined as an input");
         input.setText(value);
     }
+
     private boolean validateInput(String value, String inputName) throws IllegalArgumentException {
         if (value.length() == 0)
             return false;
@@ -156,6 +163,7 @@ public class SettingsPanel {
         }
         return true;
     }
+
     private boolean saveSettings() {
         try {
             for (String key : inputs.keySet()) {
@@ -173,12 +181,10 @@ public class SettingsPanel {
                     Integer.parseInt(getInputValue("Maximal mutations number")), getInputValue("Mutation type"),
                     Integer.parseInt(getInputValue("Genome length")), getInputValue("Animals behavior"),
                     Integer.parseInt(getInputValue("Simulation refresh time (ms)")));
-        }
-        catch (InvalidParameterException exception) {
+        } catch (InvalidParameterException exception) {
             System.out.println(exception.getMessage());
-            System.exit(-204);
-        }
-        catch (IllegalArgumentException exception) {
+            System.exit(-204); // nie lepiej przepuścić ten wyjątek wyżej?
+        } catch (IllegalArgumentException exception) {
             System.out.println(exception.getMessage());
             return false;
         }

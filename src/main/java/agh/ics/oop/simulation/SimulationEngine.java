@@ -1,4 +1,5 @@
 package agh.ics.oop.simulation;
+
 import agh.ics.oop.MapDirection;
 import agh.ics.oop.data.*;
 import agh.ics.oop.elements.Animal;
@@ -13,8 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class SimulationEngine implements IEngine, Runnable
-{
+public class SimulationEngine implements IEngine, Runnable {
     private final Simulation simulationObserver;
     private boolean isRunning = true;
     private final Settings settings;
@@ -27,8 +27,7 @@ public class SimulationEngine implements IEngine, Runnable
     // World statistics
     private final HashMap<String, IStatLog> logs = new HashMap<>();
 
-    public SimulationEngine(Simulation simulation, Settings settings)
-    {
+    public SimulationEngine(Simulation simulation, Settings settings) {
         this.settings = settings;
         this.initLogs();
         this.simulationObserver = simulation;
@@ -36,6 +35,7 @@ public class SimulationEngine implements IEngine, Runnable
         initMap();
         initAnimals();
     }
+
     private void initLogs() {
         this.logs.put("Animals", new StatLogSum());
         this.logs.put("Grass", new StatLogSum());
@@ -44,6 +44,7 @@ public class SimulationEngine implements IEngine, Runnable
         this.logs.put("Average animal energy", new StatLogAverage());
         this.logs.put("Average life length", new StatLogAverage());
     }
+
     private void initMap() {
         int mapWidth = (int) settings.getMapWidth();
         int mapHeight = (int) settings.getMapHeight();
@@ -55,6 +56,7 @@ public class SimulationEngine implements IEngine, Runnable
             this.map = new HellPortal(this, mapWidth, mapHeight, grassGenerator, settings.getGrassStarting(),
                     settings.getEnergyPerGrass(), settings.getGrassRespawn(), settings.getReproductionCost());
     }
+
     private void initAnimals() {
         int animalsStarting = settings.getAnimalsStarting();
         int maxEnergy = settings.getStartingEnergy();
@@ -71,6 +73,7 @@ public class SimulationEngine implements IEngine, Runnable
             updateStatLog("Animals", 1);
         }
     }
+
     private void updateAnimals() {
         ArrayList<Integer> toRemove = new ArrayList<>();
         for (int i = 0; i < animals.size(); i++) {
@@ -90,6 +93,7 @@ public class SimulationEngine implements IEngine, Runnable
             animal.move();
         }
     }
+
     // Funkcja sortuje zwierzaki względem danych w poleceniu parametrów, przez co przejście od końca listy gwarantuje wybór najsilniejszego
     // dostępnego w danym momencie zwierzaka
     private void updateChildren() {
@@ -107,6 +111,7 @@ public class SimulationEngine implements IEngine, Runnable
             }
         }
     }
+
     // Funkcja poszukuje najlepszego kandydata na rodzica będącego na tym samym polu co drugi rodzic
     private int findPartnerID(Animal animal, int id) {
         for (int i = id - 1; i >= 0; i--) {
@@ -117,6 +122,7 @@ public class SimulationEngine implements IEngine, Runnable
         }
         return -1;
     }
+
     private void makeChild(Animal animal1, Animal animal2) {
         IMutationBasic mutation;
         if (settings.getMutationType().equals("Full randomness"))
@@ -132,7 +138,7 @@ public class SimulationEngine implements IEngine, Runnable
             genotype = new GenotypeCrazy(animal1.getGenotype(), animal2.getGenotype(), animal1.getEnergy(),
                     animal2.getEnergy(), side, mutation);
         Animal child = new Animal(map, genotype, new AnimalParameters(animal1.getPosition(),
-                MapDirection.getDirection(genotype.getGene(0)), 2*settings.getReproductionCost()),
+                MapDirection.getDirection(genotype.getGene(0)), 2 * settings.getReproductionCost()),
                 settings.getStartingEnergy(), countAnimals);
         countAnimals += 1;
         animal1.applyEnergy(-settings.getReproductionCost());
@@ -143,6 +149,7 @@ public class SimulationEngine implements IEngine, Runnable
             this.animals.add(child);
         updateStatLog("Animals", 1);
     }
+
     private void updateSpecialLogs() {
         logs.get("Average animal energy").clearParameters();
         logs.get("Top genotype").clearParameters();
@@ -153,20 +160,31 @@ public class SimulationEngine implements IEngine, Runnable
             }
         }
     }
-    public IWorldMap getUsedMap() {return map;}
-    public HashMap<String, IStatLog> getStats() {return logs;}
+
+    public IWorldMap getUsedMap() {
+        return map;
+    }
+
+    public HashMap<String, IStatLog> getStats() {
+        return logs; // dehermetyzacja
+    }
+
     public void switchOff() {
         this.isRunning = false;
     }
-    public void switchOn() {this.isRunning = true;}
+
+    public void switchOn() {
+        this.isRunning = true;
+    }
+
     public void updateStatLog(String statName, Object change) {
         IStatLog log = logs.get(statName);
         if (log == null)
             throw new IllegalArgumentException(statName + " is not a valid statistics name");
         log.registerStatChange(change);
     }
-    public void run()
-    {
+
+    public void run() {
         while (isRunning && animals.size() > 0) {
             try {
                 Thread.sleep(delay);
@@ -183,8 +201,7 @@ public class SimulationEngine implements IEngine, Runnable
                         simulationObserver.loadStatistics();
                     }
                 });
-            }
-            catch (InterruptedException exception) {
+            } catch (InterruptedException exception) {
                 System.out.println(exception.getMessage());
             }
         }

@@ -4,7 +4,10 @@ package agh.ics.oop.data;
 public class StatLogSum implements IStatLog {
     protected int sum;
 
-    public StatLogSum() {this.sum = 0;}
+    public StatLogSum() {
+        this.sum = 0;
+    }
+
     public StatLogSum(int initialSum) {
         this.sum = initialSum;
     }
@@ -15,8 +18,12 @@ public class StatLogSum implements IStatLog {
         Integer value = (Integer) change;
         sum += value;
     }
+
     public String getStatValue() {
         return Integer.toString(sum);
     }
-    public void clearParameters() {sum = 0;}
+
+    public void clearParameters() {
+        sum = 0;
+    }
 }
